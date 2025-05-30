@@ -4,7 +4,7 @@
 
 [![npm version](https://badge.fury.io/js/@syntropiq%2Fxtrax.svg)](https://badge.fury.io/js/@syntropiq%2Fxtrax)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
-[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GPL License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## 🚀 Features
 
@@ -290,7 +290,7 @@ xtrax/
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 or later - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
