@@ -39,7 +39,7 @@ export interface ValidationError {
  * File loading options
  */
 export interface FileLoadOptions {
-  encoding?: string;
+  encoding?: 'utf8' | 'utf-8' | 'ascii' | 'base64' | 'hex' | 'latin1' | 'binary' | 'ucs2' | 'utf16le';
   maxSize?: number;
   cache?: boolean;
 }

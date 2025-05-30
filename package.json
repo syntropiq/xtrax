@@ -64,6 +64,9 @@
     "unidecode": "^1.1.0"
   },
   "devDependencies": {
+    "@syntropiq/libpcre-ts": "^1.0.0",
+    "ajv": "^8.17.1",
+    "unidecode": "^1.1.0",
     "@types/node": "^22.15.27",
     "@types/unidecode": "^1.1.0",
     "typescript": "^5.8.3",

@@ -1,4 +1,20 @@
-import unidecode from 'unidecode';
+// Dynamic import for unidecode to avoid build-time dependency
+let unidecode: any = null;
+
+async function getUnidecode() {
+  if (!unidecode) {
+    try {
+      const unidecodeModule = await import('unidecode');
+      unidecode = unidecodeModule.default;
+    } catch (error) {
+      throw new Error(
+        'unidecode library not found. Please install unidecode as a dependency.'
+      );
+    }
+  }
+  return unidecode;
+}
+
 import type { TransformOptions } from './types.js';
 
 /**
@@ -8,7 +24,7 @@ export function transformDates<T extends Record<string, any>>(
   data: T, 
   dateFields: string[]
 ): T {
-  const transformed = { ...data };
+  const transformed = { ...data } as any;
   
   for (const field of dateFields) {
     if (field in transformed && typeof transformed[field] === 'string') {
@@ -17,8 +33,10 @@ export function transformDates<T extends Record<string, any>>(
         try {
           transformed[field] = new Date(dateValue);
         } catch {
-          // Keep original value if parsing fails
-          console.warn(`Failed to parse date field '${field}': ${dateValue}`);
+          // Keep original value if parsing fails - use global console if available
+          if (typeof globalThis !== 'undefined' && globalThis.console) {
+            globalThis.console.warn(`Failed to parse date field '${field}': ${dateValue}`);
+          }
         }
       }
     }
@@ -48,7 +66,7 @@ export function normalizeStrings<T extends Record<string, any>>(
   
   for (const field of stringFields) {
     if (field in normalized && typeof normalized[field] === 'string') {
-      normalized[field] = unidecode(normalized[field]);
+      (normalized as any)[field] = unidecode((normalized as any)[field]);
     }
   }
   

@@ -1,21 +1,58 @@
-import Ajv, { type JSONSchemaType, type ValidateFunction } from 'ajv';
-import { readFile } from 'fs/promises';
-import type { ValidationResult, ValidationError } from './types.js';
+import type { JSONSchemaType, ValidateFunction, ValidationResult, ValidationError } from './types.js';
 
-// Global AJV instance with configuration
-const ajv = new Ajv({
-  allErrors: true,        // Report all validation errors
-  verbose: true,          // Include more detailed error information
-  strict: false,          // Allow unknown keywords (for flexibility)
-  removeAdditional: false // Don't remove additional properties
-});
+// Dynamic imports for dependencies to avoid build-time requirements
+let Ajv: any = null;
+let readFile: any = null;
+
+async function getAjv() {
+  if (!Ajv) {
+    try {
+      const ajvModule = await import('ajv');
+      Ajv = ajvModule.default;
+    } catch (error) {
+      throw new Error(
+        'AJV library not found. Please install ajv as a dependency.'
+      );
+    }
+  }
+  return Ajv;
+}
+
+async function getReadFile() {
+  if (!readFile) {
+    try {
+      const fsModule = await import('fs/promises');
+      readFile = fsModule.readFile;
+    } catch (error) {
+      throw new Error('fs/promises not available');
+    }
+  }
+  return readFile;
+}
+
+// Global AJV instance with configuration  
+let ajv: any = null;
+
+async function getAjvInstance() {
+  if (!ajv) {
+    const AjvClass = await getAjv();
+    ajv = new AjvClass({
+      allErrors: true,        // Report all validation errors
+      verbose: true,          // Include more detailed error information
+      strict: false,          // Allow unknown keywords (for flexibility)
+      removeAdditional: false // Don't remove additional properties
+    });
+  }
+  return ajv;
+}
 
 /**
  * Load and compile a JSON schema from a file
  */
 export async function loadSchema<T>(schemaPath: string): Promise<JSONSchemaType<T>> {
   try {
-    const schemaContent = await readFile(schemaPath, 'utf-8');
+    const readFileFunc = await getReadFile();
+    const schemaContent = await readFileFunc(schemaPath, 'utf-8');
     const schema = JSON.parse(schemaContent) as JSONSchemaType<T>;
     return schema;
   } catch (error) {
@@ -28,14 +65,16 @@ export async function loadSchema<T>(schemaPath: string): Promise<JSONSchemaType<
  */
 export async function createValidator<T>(schemaPath: string): Promise<ValidateFunction<T>> {
   const schema = await loadSchema<T>(schemaPath);
-  return ajv.compile(schema);
+  const ajvInstance = await getAjvInstance();
+  return ajvInstance.compile(schema);
 }
 
 /**
  * Create a validator function from a schema object
  */
-export function createValidatorFromSchema<T>(schema: JSONSchemaType<T>): ValidateFunction<T> {
-  return ajv.compile(schema);
+export async function createValidatorFromSchema<T>(schema: JSONSchemaType<T>): Promise<ValidateFunction<T>> {
+  const ajvInstance = await getAjvInstance();
+  return ajvInstance.compile(schema);
 }
 
 /**

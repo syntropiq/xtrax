@@ -14,7 +14,7 @@ export async function loadJSONFile<T = unknown>(
   filePath: string, 
   options: FileLoadOptions = {}
 ): Promise<T> {
-  const { encoding = 'utf-8', maxSize = 50 * 1024 * 1024 } = options; // 50MB default max
+  const { encoding = 'utf8', maxSize = 50 * 1024 * 1024 } = options; // 50MB default max
   
   try {
     // Check file size
@@ -23,7 +23,7 @@ export async function loadJSONFile<T = unknown>(
       throw new Error(`File ${filePath} exceeds maximum size of ${maxSize} bytes`);
     }
     
-    const content = await readFile(filePath, encoding);
+    const content = await readFile(filePath, { encoding });
     const data = JSON.parse(content);
     return data as T;
   } catch (error) {

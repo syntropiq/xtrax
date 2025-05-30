@@ -42,7 +42,7 @@ export function extractVariableReferences(template: string): string[] {
   return matches.map(match => {
     const varMatch = match.match(/\$\{?(\w+)\}?/);
     return varMatch ? varMatch[1] : '';
-  }).filter(Boolean);
+  }).filter((name): name is string => Boolean(name));
 }
 
 /**
