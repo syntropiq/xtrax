@@ -1,0 +1,41 @@
+# Source files
+src/
+*.ts
+!*.d.ts
+
+# Development files
+test-basic.js
+*.old.*
+*.backup.*
+*.config.ts
+tsconfig.json
+vitest.config.ts
+
+# Git and development
+.git/
+.gitignore
+node_modules/
+coverage/
+
+# Documentation and notes
+EXTRACTION_SUMMARY.md
+rubber-ducky-journal.md
+README.old.md
+
+# Lock files and cache
+package-lock.json
+.npm/
+.cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build artifacts (keep dist/ for publishing)
+# dist/ - commented out because we need to publish the built files

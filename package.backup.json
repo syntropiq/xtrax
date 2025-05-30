@@ -26,8 +26,7 @@
     "json-validation",
     "court-data",
     "citation-parsing",
-    "python-compatible",
-    "reusable-components"
+    "python-compatible"
   ],
   "exports": {
     ".": {
@@ -46,24 +45,41 @@
       "import": "./dist/data-processing/index.js",
       "types": "./dist/data-processing/index.d.ts"
     },
-    "./typescript-project-template": {
-      "import": "./dist/typescript-project-template/index.js",
-      "types": "./dist/typescript-project-template/index.d.ts"
-    }
+    "./typescript-project-template": "./typescript-project-template/"
   },
   "files": [
-    "dist/",
-    "README.md",
-    "LICENSE",
-    "package.json"
+    "dist",
+    "typescript-project-template"
   ],
   "scripts": {
     "build": "tsc",
-    "clean": "rm -rf dist/",
-    "test": "vitest",
-    "test:coverage": "vitest --coverage",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syntropiq/xtrax.git"
+  },
+  "keywords": [
+    "legal",
+    "data-processing",
+    "typescript",
+    "pcre",
+    "template-engine",
+    "reusable-components",
+    "legal-citations",
+    "court-data",
+    "regex"
+  ],
+  "author": "devlux76 <devlux76@icloud.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/syntropiq/xtrax/issues"
+  },
+  "homepage": "https://github.com/syntropiq/xtrax#readme",
   "peerDependencies": {
     "@syntropiq/libpcre-ts": "^1.0.0",
     "ajv": "^8.17.1",
