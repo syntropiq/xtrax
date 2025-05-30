@@ -1,0 +1,54 @@
+{
+  "name": "{{PROJECT_NAME}}",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:run": "vitest run",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amjur-org/{{GITHUB_REPO}}.git"
+  },
+  "keywords": [
+    "legal",
+    "citations",
+    "{{MAIN_DATA_TYPE}}",
+    "law",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amjur-org/{{GITHUB_REPO}}/issues"
+  },
+  "homepage": "https://github.com/amjur-org/{{GITHUB_REPO}}#readme",
+  "description": "{{PROJECT_DESCRIPTION}}",
+  "dependencies": {
+    "@syntropiq/libpcre-ts": "^1.0.0",
+    "ajv": "^8.17.1",
+    "unidecode": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.27",
+    "@types/unidecode": "^1.1.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
+  }
+}
