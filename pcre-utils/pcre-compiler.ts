@@ -1,23 +1,15 @@
 import type { PCRERegex } from './types.js';
+import { PCRE } from '../../libpcre-ts/dist/index.js';
 
 let _pcreInstance: any = null;
 
 /**
  * Get or create the singleton PCRE instance
- * Uses dynamic import to avoid build-time dependency on @syntropiq/libpcre-ts
  */
 async function getPCREInstance(): Promise<any> {
   if (!_pcreInstance) {
-    try {
-      // Dynamic import allows the library to be a peer dependency
-      const { PCRE } = await import('@syntropiq/libpcre-ts');
-      _pcreInstance = new PCRE();
-      await _pcreInstance.init();
-    } catch (error) {
-      throw new Error(
-        'PCRE library not found. Please install @syntropiq/libpcre-ts as a dependency.'
-      );
-    }
+    _pcreInstance = new PCRE();
+    await _pcreInstance.init();
   }
   return _pcreInstance;
 }
