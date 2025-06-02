@@ -1,7 +1,7 @@
 {
   "name": "@syntropiq/xtrax",
-  "version": "1.0.0",
-  "description": "XTRAX (eXtracted Reusable Components) - TypeScript library for data processing and regex-based parsing applications",
+  "version": "1.1.0",
+  "description": "XTRAX (eXtracted Reusable Components) - Serverless-ready TypeScript library for data processing and regex-based parsing applications",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -27,7 +27,11 @@
     "court-data",
     "citation-parsing",
     "python-compatible",
-    "reusable-components"
+    "reusable-components",
+    "serverless",
+    "cloudflare-workers",
+    "edge-computing",
+    "zero-dependencies"
   ],
   "exports": {
     ".": {
@@ -58,27 +62,30 @@
     "package.json"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "bun run tsc",
     "clean": "rm -rf dist/",
-    "test": "vitest",
-    "test:coverage": "vitest --coverage",
-    "prepublishOnly": "npm run clean && npm run build"
+    "test": "bun run vitest",
+    "test:coverage": "bun run vitest --coverage",
+    "prepublishOnly": "bun run clean && bun run build"
   },
   "peerDependencies": {
-    "@syntropiq/libpcre-ts": "^1.0.0",
-    "ajv": "^8.17.1",
-    "unidecode": "^1.1.0"
+    "@syntropiq/libpcre-ts": "latest",
+    "unidecode": "latest"
   },
   "devDependencies": {
-    "@syntropiq/libpcre-ts": "^1.0.0",
-    "ajv": "^8.17.1",
-    "unidecode": "^1.1.0",
-    "@types/node": "^22.15.27",
-    "@types/unidecode": "^1.1.0",
-    "typescript": "^5.8.3",
-    "vitest": "^3.1.4"
+    "@cloudflare/vitest-pool-workers": "latest",
+    "@edge-runtime/vm": "latest",
+    "@syntropiq/libpcre-ts": "latest",
+    "@types/node": "latest",
+    "@types/unidecode": "latest",
+    "@vitest/coverage-istanbul": "latest",
+    "@vitest/coverage-v8": "latest",
+    "typescript": "latest",
+    "unidecode": "latest",
+    "vitest": "latest",
+    "wrangler": "latest"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24.1.0"
   }
 }

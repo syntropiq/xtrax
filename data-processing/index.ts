@@ -1,44 +1,34 @@
-export { 
-  createValidator, 
-  createValidatorFromSchema, 
-  validateData, 
-  validateDataWithSchema, 
-  validateDataArray, 
-  SchemaValidator,
-  loadSchema 
+export {
+  createValidatorFromSchema,
+  validateData,
+  validateDataWithSchema,
+  validateDataArray,
+  SchemaValidator
 } from './json-validator.js';
 
-export { 
-  loadJSONFile, 
-  loadJSONFileWithMetadata, 
-  loadDataWithSchema, 
-  loadJSONFiles, 
-  loadJSONFileWithCache, 
-  clearFileCache, 
-  getCacheStats 
-} from './file-loader.js';
+// File loading functions removed - these should be handled by the consumer
+// as they are Node.js-specific and not core to the library's data processing purpose
 
-export { 
-  transformDates, 
-  transformDatesInArray, 
-  normalizeStrings, 
-  normalizeStringsInArray, 
-  deepTransform, 
-  transformData, 
-  transformDataArray, 
-  extractUniqueValues, 
-  groupByField, 
-  safeGet 
+export {
+  transformDates,
+  transformDatesInArray,
+  normalizeStrings,
+  normalizeStringsInArray,
+  deepTransform,
+  transformData,
+  transformDataArray,
+  extractUniqueValues,
+  groupByField,
+  safeGet
 } from './data-transformer.js';
 
-export type { 
-  ValidationResult, 
-  ValidationError, 
-  FileLoadOptions, 
-  TransformOptions, 
-  LoadResult, 
-  CacheEntry, 
+export type {
+  ValidationResult,
+  ValidationError,
+  TransformOptions,
   ProcessorConfig,
   ValidateFunction,
-  JSONSchemaType 
+  JSONSchemaType
 } from './types.js';
+
+// File-related types removed as they're no longer exported

@@ -5,16 +5,14 @@ Utilities for loading, validating, and transforming JSON data with type safety a
 ## Features
 
 - **JSON Schema Validation**: AJV-based validation with detailed error reporting
-- **File System Integration**: Async/sync data loading with proper error handling
 - **Data Transformation**: Utilities for processing legal data structures
 - **Type Safety**: Full TypeScript support with generic validation
 - **Performance**: Efficient data loading and caching strategies
-- **Error Handling**: Comprehensive error handling and recovery
+- **Error Handling**: Comprehensive error handling and recovery 
 
 ## Files
 
 - `json-validator.ts` - JSON schema validation utilities
-- `file-loader.ts` - File system integration for data loading
 - `data-transformer.ts` - Data transformation utilities
 - `types.ts` - TypeScript type definitions
 - `README.md` - This documentation

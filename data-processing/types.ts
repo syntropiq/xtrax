@@ -2,7 +2,7 @@
  * Type definitions for data processing utilities
  */
 
-// Placeholder types for AJV when not available during build
+/* Placeholder types for AJV when not available during build */
 export interface ValidateFunction<T = any> {
   (data: any): data is T;
   errors?: ValidationError[] | null;
@@ -36,15 +36,6 @@ export interface ValidationError {
 }
 
 /**
- * File loading options
- */
-export interface FileLoadOptions {
-  encoding?: 'utf8' | 'utf-8' | 'ascii' | 'base64' | 'hex' | 'latin1' | 'binary' | 'ucs2' | 'utf16le';
-  maxSize?: number;
-  cache?: boolean;
-}
-
-/**
  * Data transformation options
  */
 export interface TransformOptions {
@@ -52,28 +43,6 @@ export interface TransformOptions {
   stringFields?: string[];
   normalizeUnicode?: boolean;
   preserveOriginal?: boolean;
-}
-
-/**
- * Loading result with metadata
- */
-export interface LoadResult<T> {
-  data: T;
-  metadata: {
-    filePath: string;
-    loadTime: number;
-    fileSize: number;
-    validationTime?: number;
-  };
-}
-
-/**
- * Cache entry for loaded data
- */
-export interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-  filePath: string;
 }
 
 /**

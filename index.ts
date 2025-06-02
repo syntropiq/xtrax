@@ -23,9 +23,8 @@ export type {
   VariableProcessingResult 
 } from './template-engine/index.js';
 
-export type { 
-  ValidationResult, 
-  ValidationError, 
-  FileLoadOptions, 
-  TransformOptions 
+export type {
+  ValidationResult,
+  ValidationError,
+  TransformOptions
 } from './data-processing/index.js';

@@ -21,7 +21,7 @@ import type { TransformOptions } from './types.js';
  * Transform date strings to Date objects in data structure
  */
 export function transformDates<T extends Record<string, any>>(
-  data: T, 
+  data: T,
   dateFields: string[]
 ): T {
   const transformed = { ...data } as any;
@@ -30,14 +30,12 @@ export function transformDates<T extends Record<string, any>>(
     if (field in transformed && typeof transformed[field] === 'string') {
       const dateValue = transformed[field];
       if (dateValue && dateValue !== '') {
-        try {
-          transformed[field] = new Date(dateValue);
-        } catch {
-          // Keep original value if parsing fails - use global console if available
-          if (typeof globalThis !== 'undefined' && globalThis.console) {
-            globalThis.console.warn(`Failed to parse date field '${field}': ${dateValue}`);
-          }
+        const parsedDate = new Date(dateValue);
+        // Check if the date is valid (not NaN)
+        if (!isNaN(parsedDate.getTime())) {
+          transformed[field] = parsedDate;
         }
+        // If invalid, keep the original string value unchanged
       }
     }
   }
