@@ -66,7 +66,8 @@
     "clean": "rm -rf dist/",
     "test": "bun run vitest",
     "test:coverage": "bun run vitest --coverage",
-    "prepublishOnly": "bun run clean && bun run build"
+    "prepublishOnly": "bun run clean && bun run build",
+    "postinstall": "bun run build"
   },
   "peerDependencies": {
     "@syntropiq/libpcre-ts": "latest",
