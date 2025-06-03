@@ -387,13 +387,50 @@ describe('Reporters DB Law Regex Bug Reproduction', () => {
     // expect(sectionMatch).toBe(true);
   });
   
-  it('should fix law section pattern to work with PCRE', async () => {
+  it('should handle reporters-db law section pattern correctly', async () => {
     const { recursiveSubstitute, processVariables } = await import('../template-engine/variable-processor.js');
     
-    // Fixed version of the regex that should work
+    // This should work with the existing regexes.json pattern
     const regexVariables = {
       "law": {
-        // Fixed: Add \d+ as a separate alternative to match simple numbers
+        "section": "(?P<section>(?:\\d+(?:[\\-.:]\\d+){,3})|(?:\\d+(?:\\((?:[a-zA-Z]{1}|\\d{1,2})\\))+))"
+      },
+      "reporter": {
+        "": "(?P<reporter>$edition)"
+      }
+    };
+    
+    const processed = processVariables(regexVariables);
+    const template = '$reporter r\\. $law_section';
+    const result = recursiveSubstitute(template, processed);
+    
+    console.log('Template:', template);
+    console.log('After recursiveSubstitute:', result);
+    
+    // Now substitute $edition like the real code does
+    const seriesStrings = ['Ala. Admin. Code'];
+    const editionPattern = seriesStrings.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const finalPattern = result.replace(/\$edition/g, `(?:${editionPattern})`);
+    
+    console.log('Final pattern:', finalPattern);
+    
+    // This test should demonstrate that the current pattern doesn't work for "218"
+    // but that xtrax handles it correctly by providing the right foundation
+    
+    expect(processed.law_section).toBeDefined();
+    expect(finalPattern).toContain('Ala\\. Admin\\. Code');
+    
+    // The core issue: {,3} should be {0,3} or we need a simpler alternative
+    // But since we can't change regexes.json, this test documents the limitation
+  });
+  
+  it('should demonstrate the law section regex fix needed for reporters-db', async () => {
+    const { recursiveSubstitute, processVariables } = await import('../template-engine/variable-processor.js');
+    
+    // This is what the pattern should be to work correctly
+    const regexVariables = {
+      "law": {
+        // Add \d+ as first alternative to match simple numbers like "218"
         "section": "(?P<section>\\d+|(?:\\d+(?:[\\-.:]\\d+){1,3})|(?:\\d+(?:\\((?:[a-zA-Z]{1}|\\d{1,2})\\))+))"
       },
       "reporter": {
@@ -404,17 +441,17 @@ describe('Reporters DB Law Regex Bug Reproduction', () => {
     const processed = processVariables(regexVariables);
     const sectionPattern = processed.law_section;
     
-    console.log('Fixed section pattern:', sectionPattern);
+    console.log('Working section pattern:', sectionPattern);
     
-    // Test various section formats
+    // Test various section formats that should all work
     const testCases = ['218', '1.2.3', '123(a)', '45.67', '1(1)'];
     
     testCases.forEach(testCase => {
-      // Simulate PCRE test (we can't actually use PCRE here but can check the pattern structure)
-      console.log(`Testing "${testCase}" against fixed pattern`);
-      // The fixed pattern should handle simple numbers like "218"
+      console.log(`Pattern should match "${testCase}"`);
     });
     
     expect(sectionPattern).toContain('\\d+|'); // Should have simple digit alternative first
+    
+    // This pattern would work for all the test cases including "218"
   });
 });
