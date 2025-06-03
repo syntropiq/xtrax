@@ -117,3 +117,6 @@ public
 # Testing
 test-results/
 playwright-report/
+
+# Bun
+bun.lock
