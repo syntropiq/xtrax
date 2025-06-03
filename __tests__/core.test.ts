@@ -50,7 +50,7 @@ describe('PCREUtils - Worker Compatible', () => {
   it('substituteEditions should create alternation group', async () => {
     const { substituteEditions } = await import('../pcre-utils/regex-utils.js');
     const result = substituteEditions('foo $edition bar', 'A', { 'A Var': 'A' });
-    expect(result[0]).toContain('(?:A|A Var)');
+    expect(result[0]).toContain('(?:A|A\\ Var)'); // Space is now escaped for Python compatibility
     expect(result).toHaveLength(1);
   });
 
