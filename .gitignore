@@ -120,3 +120,4 @@ playwright-report/
 
 # Bun
 bun.lock
+package-lock.json
