@@ -161,8 +161,30 @@ console.log(categories); // ['developer', 'designer']
 **Key Functions**:
 - `convertNamedGroups()` - Convert Python named groups to JavaScript format
 - `substituteEdition()` - Normalize legal edition formats
-- `escapeRegex()` - Safely escape regex special characters
+- `escapeRegex()` - **Python-compatible regex escaping** including spaces (matches Python's `re.escape()`)
 - `compileRegex()` - Compile PCRE patterns (requires peer dependency and Node.js)
+
+#### Python Regex Compatibility
+
+XTRAX's `escapeRegex()` function provides **perfect fidelity** with Python's `re.escape()` function, including escaping spaces:
+
+```typescript
+import { PCREUtils } from '@syntropiq/xtrax';
+
+// JavaScript native escaping (spaces NOT escaped)
+const jsEscaped = 'Ala. Admin. Code'.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+console.log(jsEscaped); // "Ala\. Admin\. Code"
+
+// XTRAX Python-compatible escaping (spaces ARE escaped)
+const pythonEscaped = PCREUtils.escapeRegex('Ala. Admin. Code');
+console.log(pythonEscaped); // "Ala\.\  Admin\.\  Code"
+```
+
+**When to use XTRAX escapeRegex():**
+- When building regex patterns that must match Python regex library behavior
+- When migrating Python regex code to TypeScript
+- When working with legal citation patterns that include spaces (e.g., "F. 2d", "Ala. Admin. Code")
+- When ensuring cross-platform regex compatibility between Python and TypeScript applications
 
 ### TemplateEngine Component
 
