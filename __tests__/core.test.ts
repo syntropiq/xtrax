@@ -334,8 +334,6 @@ describe('Integration Tests', () => {
     expect(withEdition).toContain('F\\.2d'); // Should be escaped
   });
 });
-<<<<<<< HEAD
-=======
 
 // Reporters DB Law Regex Test Case
 describe('Reporters DB Law Regex Bug Reproduction', () => {
@@ -420,4 +418,3 @@ describe('Reporters DB Law Regex Bug Reproduction', () => {
     expect(sectionPattern).toContain('\\d+|'); // Should have simple digit alternative first
   });
 });
->>>>>>> da3deb1 (Add wrangler configuration for xtrax-test-worker with initial settings)
