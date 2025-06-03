@@ -34,6 +34,13 @@ describe('PCREUtils - Worker Compatible', () => {
     expect(escapeRegex('$100')).toBe('\\$100');
   });
 
+  it('escapeRegex should escape spaces for Python compatibility', async () => {
+    const { escapeRegex } = await import('../pcre-utils/regex-utils.js');
+    expect(escapeRegex('Ala. Admin. Code')).toBe('Ala\\.\\ Admin\\.\\ Code');
+    expect(escapeRegex('F. 2d')).toBe('F\\.\\ 2d');
+    expect(escapeRegex('test space')).toBe('test\\ space');
+  });
+
   it('substituteEdition should replace $edition placeholder', async () => {
     const { substituteEdition } = await import('../pcre-utils/regex-utils.js');
     expect(substituteEdition('foo $edition bar', 'baz')).toBe('foo baz bar');
@@ -453,5 +460,50 @@ describe('Reporters DB Law Regex Bug Reproduction', () => {
     expect(sectionPattern).toContain('\\d+|'); // Should have simple digit alternative first
     
     // This pattern would work for all the test cases including "218"
+  });
+});
+
+// Critical Bug: Exact Python vs TypeScript Regex Comparison
+describe('CRITICAL: Python vs TypeScript Regex Parity Bug', () => {
+  it('should produce identical regex pattern as Python for Alabama Admin Code', async () => {
+    const { recursiveSubstitute, processVariables } = await import('../template-engine/variable-processor.js');
+    const { escapeRegex } = await import('../pcre-utils/regex-utils.js');
+    
+    // Use the EXACT regex variables from reporters-db regexes.json
+    const regexVariables = {
+      "law": {
+        "section": "(?P<section>(?:\\d+(?:[\\-.:]\\d+){,3})|(?:\\d+(?:\\((?:[a-zA-Z]{1}|\\d{1,2})\\))+))"
+      },
+      "reporter": {
+        "": "(?P<reporter>$edition)"
+      }
+    };
+    
+    const processed = processVariables(regexVariables);
+    const template = '$reporter r\\. $law_section';
+    
+    // Step 1: Apply recursive substitution
+    const pattern = recursiveSubstitute(template, processed);
+    console.log('After recursiveSubstitute:', pattern);
+    
+    // Step 2: Substitute $edition using XTRAX's Python-compatible escapeRegex
+    const seriesStrings = ['Ala. Admin. Code'];
+    const editionPattern = seriesStrings.map(s => escapeRegex(s)).join('|');
+    const finalPattern = pattern.replace(/\$edition/g, `(?:${editionPattern})`);
+    
+    console.log('TypeScript pattern:', finalPattern);
+    console.log('Expected Python pattern: ^(?P<reporter>(?:Ala\\.\\  Admin\\.\\  Code)) r\\. (?P<section>(?:\\d+(?:[\\-.:]\\d+){,3})|(?:\\d+(?:\\((?:[a-zA-Z]{1}|\\d{1,2})\\))+))$');
+    
+    // The EXACT Python pattern - updated to match actual Python re.escape() output
+    const pythonPattern = '^(?P<reporter>(?:Ala\\.\\ Admin\\.\\ Code)) r\\. (?P<section>(?:\\d+(?:[\\-.:]\\d+){,3})|(?:\\d+(?:\\((?:[a-zA-Z]{1}|\\d{1,2})\\))+))$';
+    
+    // Anchor the TypeScript pattern
+    const anchoredTSPattern = '^' + finalPattern + '$';
+    
+    console.log('Anchored TS pattern:  ', anchoredTSPattern);
+    console.log('Expected Python pattern:', pythonPattern);
+    
+    // Now this should pass - XTRAX provides Python-compatible regex escaping
+    expect(anchoredTSPattern).toBe(pythonPattern);
   });
 });
